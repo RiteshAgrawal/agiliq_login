@@ -23,7 +23,7 @@ def agiliq(request):
 			'state':'application'}
 		return HttpResponseRedirect('%s?%s'%(auth_url,urllib.urlencode(params)))
 	
-	elif (not access_token and request.GET.get('state','')==state):	#This is for getting the access token after authorization
+	elif (request.GET.get('state','')==state):	#This is for getting the access token after authorization
 		params = {'client_id':client_id,
 			'client_secret':client_secret,
 			'code':code,
@@ -32,8 +32,8 @@ def agiliq(request):
 		respond = requests.post(access_url,data=params,headers=headers)
 		access_token =  respond.json()['access_token']
 		upload_url='http://join.agiliq.com/api/resume/upload/?access_token='+access_token
+		
 		a=Application()
-		html = '<html><body>All the details are uploaded</body></html>'
 		return render_to_response('submit.html',{'form':a,'url':upload_url})
 
 			
