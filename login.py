@@ -4,7 +4,7 @@ import urllib
 import urllib2
 import json
 import requests
-
+from form import Application 
 client_id = 'yZuFGnC2azgd0zXm1YgZ2lRNkXUtDIMxV90UEqRSWbpEveCyG1'
 client_secret = 'vonyUrjsyeToyfHbl0YtR7SWrDP3YxhpWnhXJuOcFixoutT1ZF' 
 redirect_uri = 'http://127.0.0.1:8000/agiliq/'
@@ -28,17 +28,13 @@ def agiliq(request):
 			'client_secret':client_secret,
 			'code':code,
 			'redirect_uri':redirect_uri}
-		headers = {'Accept':'application/json','User-Agent': 'Mozilla/5.0'}
+		headers = {'Accept':'application/json','User-Agent': 'Mozilla/5.0',}
 		respond = requests.post(access_url,data=params,headers=headers)
 		access_token =  respond.json()['access_token']
 		upload_url='http://join.agiliq.com/api/resume/upload/?access_token='+access_token
-		details = {'first_name':'Ritesh',
-			'last_name':'Agrawal',
-			'project_url':'https://github.com/RiteshAgrawal',
-			'code_url':'https://github.com/RiteshAgrawal/agiliq_login'}
-		resume = {'file':open('/home/ritesh/CV.pdf','rb')}
-	#	respond = requests.post(upload_uri,data=details,files=resume)
+		a=Application()
 		html = '<html><body>All the details are uploaded</body></html>'
-		return HttpResponse(html)
+		return render_to_response('submit.html',{'form':a,'url':upload_url})
+
 			
 	
